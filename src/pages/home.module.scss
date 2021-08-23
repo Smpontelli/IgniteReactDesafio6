@@ -1,1 +1,62 @@
+.hero {
+  a {
+    // flex:1;
+    display: block;
 
+    & + a {
+      margin-top: 3rem;
+    }
+
+    strong {
+      // display: block;
+      font-size: 28px;
+      line-height: 2rem;
+      transition: all 0.2s;
+    }
+
+    &:hover strong {
+      color: var(--pink);
+      text-decoration: underline;
+    }
+
+    p {
+      color: var(--gray-text);
+      margin: 0.5rem 0 0;
+      line-height: 1.625rem;
+      font-size: 18px;
+
+    }
+
+
+  }
+}
+
+.infos {
+  display: flex;
+  margin: 1rem 0 0;
+  gap: 24px;
+  time, span {
+    font-size: 14px;
+    color: var(--gray-text);
+    display: flex;
+    align-items: center;
+
+    svg {
+      margin-right: 8px;
+    }
+  }
+}
+
+.button {
+  background-color: transparent;
+  border: none;
+  color: var(--pink);
+  margin-top: 4rem;
+  display: inline-block;
+
+  &:hover {
+    border-bottom: 2px solid var(--pink);
+
+  }
+
+}

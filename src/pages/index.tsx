@@ -1,5 +1,7 @@
 import { GetStaticProps } from 'next';
+import {FiCalendar, FiUser} from 'react-icons/fi'
 import Head from 'next/head'
+import Link from 'next/link'
 
 import { getPrismicClient } from '../services/prismic';
 
@@ -25,7 +27,7 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home() {
+export default function Home ({postsPagination}: HomeProps) {
   return (
 
     <>
@@ -33,19 +35,50 @@ export default function Home() {
         <title>Home | {'</> '}spacetraveling.</title>
       </Head>
       <main className={commonStyles.home}>
-        <section>
-          <h1> News about the <span>React</span> world.</h1>
+        <section className = {styles.hero}>
+          {postsPagination.results.map(post => (
+            <Link  href={`/post/${post.uid}`}>
+                <a key={post.uid}>
+                    <strong>{post.data.title}</strong>
+                    <p>{post.data.subtitle}</p>
+                    <div className = {styles.infos}>
+                      <time >
+                        <FiCalendar/>
+                        {new Date(post.first_publication_date).toLocaleDateString('pt-BR', {
+                            day: '2-digit',
+                            month: 'long',
+                            year: 'numeric'
+                        })}
+                      </time>
+                      <span>
+                        <FiUser/>
+                        {post.data.author}
+                      </span>
+                    </div>
+                </a>
+            </Link>
+          ))}
 
         </section>
+
+        <button className = {styles.button}> <strong>Carregar mais posts</strong></button>
 
       </main>
      </>
   )
 }
 
-// export const getStaticProps = async () => {
-//   // const prismic = getPrismicClient();
-//   // const postsResponse = await prismic.query(TODO);
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicClient();
+  const postsResponse = await prismic.query('', {pageSize: 2})
+  const postsPagination = {
+    next_page: postsResponse.next_page,
+    results: postsResponse.results
+  }
 
-//   // TODO
-// };
+  return {
+    props: {
+      postsPagination
+    }
+  }
+};
