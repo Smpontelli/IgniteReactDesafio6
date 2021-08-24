@@ -9,6 +9,7 @@ import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 import { RichText } from 'prismic-dom';
 import Prismic from '@prismicio/client';
+import UtterancesComments from '../../components/UtterancesComments'
 interface Post {
   first_publication_date: string | null;
   data: {
@@ -31,6 +32,8 @@ interface PostProps {
 }
 
 export default function Post({post}: PostProps) {
+
+
 
   const router = useRouter();
   if (router.isFallback) {
@@ -81,6 +84,8 @@ export default function Post({post}: PostProps) {
             ))}
           </section>
         </article>
+
+        <UtterancesComments/>
       </main>
     </>
   )
