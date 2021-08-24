@@ -31,22 +31,6 @@
   }
 }
 
-.infos {
-  display: flex;
-  margin: 1rem 0 0;
-  gap: 24px;
-  time, span {
-    font-size: 14px;
-    color: var(--gray-text);
-    display: flex;
-    align-items: center;
-
-    svg {
-      margin-right: 8px;
-    }
-  }
-}
-
 .button {
   background-color: transparent;
   border: none;

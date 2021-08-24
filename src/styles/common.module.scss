@@ -2,7 +2,7 @@
 
   max-width: 1120px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 2rem 80px;
   // height: calc(100vh - 5rem);
 
   // display: flex;
@@ -10,4 +10,20 @@
   // align-items: center;
   // justify-content: space-between;
 
+}
+
+.infos {
+  display: flex;
+  margin: 1rem 0 0;
+  gap: 24px;
+  time, span {
+    font-size: 14px;
+    color: var(--gray-text);
+    display: flex;
+    align-items: center;
+
+    svg {
+      margin-right: 8px;
+    }
+  }
 }

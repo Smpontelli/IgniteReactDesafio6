@@ -1,1 +1,28 @@
-// TODO
+.article {
+  h1 {
+    font-size: 48px;
+  }
+
+  section {
+
+    h2 {
+      font-size: 36px;
+      margin: 56px 0;
+
+    }
+
+  }
+}
+
+.bodyText {
+    font-size: 18px;
+    color: var(--gray-text)
+
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
