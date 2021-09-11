@@ -1,13 +1,14 @@
 import { GetStaticProps } from 'next';
-import {FiCalendar, FiUser} from 'react-icons/fi'
-import Head from 'next/head'
-import Link from 'next/link'
+import { FiCalendar, FiUser } from 'react-icons/fi';
+import Head from 'next/head';
+import Link from 'next/link';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
-import { getPrismicClient } from '../services/prismic';
 import { useEffect, useState } from 'react';
+import { getPrismicClient } from '../services/prismic';
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
+import ButtonPreview from '../components/ButtonPreview';
 
 interface Post {
   uid?: string;
@@ -26,9 +27,10 @@ interface PostPagination {
 
 interface HomeProps {
   postsPagination: PostPagination;
+  preview: boolean;
 }
 
-export default function Home ({postsPagination}: HomeProps) {
+export default function Home({ postsPagination, preview }: HomeProps) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [nextPage, setNextPage] = useState('');
 
@@ -40,7 +42,7 @@ export default function Home ({postsPagination}: HomeProps) {
   function handlePagination(): void {
     fetch(nextPage)
       .then(res => res.json())
-      .then(data=> {
+      .then(data => {
         const formattedData = data.results.map(post => {
           return {
             uid: post.uid,
@@ -59,55 +61,67 @@ export default function Home ({postsPagination}: HomeProps) {
   }
 
   return (
-
     <>
       <Head>
         <title>Home | {'</> '}spacetraveling.</title>
       </Head>
       <main className={commonStyles.home}>
-        <section className = {styles.hero}>
+        <section className={styles.hero}>
           {posts.map(post => (
-            <Link  href={`/post/${post.uid}`} key={post.uid}>
-                <a >
-                    <strong>{post.data.title}</strong>
-                    <p>{post.data.subtitle}</p>
-                    <div className = {commonStyles.infos}>
-                      <time >
-                        <FiCalendar/>
-                        {format(new Date(post.first_publication_date), 'dd MMM yyy', { locale: ptBR})}
-                      </time>
-                      <span>
-                        <FiUser/>
-                        {post.data.author}
-                      </span>
-                    </div>
-                </a>
+            <Link href={`/post/${post.uid}`} key={post.uid}>
+              <a>
+                <strong>{post.data.title}</strong>
+                <p>{post.data.subtitle}</p>
+                <div className={commonStyles.infos}>
+                  <time>
+                    <FiCalendar />
+                    {format(
+                      new Date(post.first_publication_date),
+                      'dd MMM yyy',
+                      { locale: ptBR }
+                    )}
+                  </time>
+                  <span>
+                    <FiUser />
+                    {post.data.author}
+                  </span>
+                </div>
+              </a>
             </Link>
           ))}
-
         </section>
         {nextPage && (
-
-          <button onClick={handlePagination} className = {styles.button}>
+          <button
+            type="button"
+            onClick={handlePagination}
+            className={styles.button}
+          >
             <strong>Carregar mais posts</strong>
           </button>
         )}
-
+        {preview && <ButtonPreview />}
       </main>
-     </>
-  )
+    </>
+  );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<HomeProps> = async ({
+  preview = false,
+  previewData,
+}) => {
   const prismic = getPrismicClient();
-  const postsResponse = await prismic.query('', {pageSize: 1})
+  const postsResponse = await prismic.query('', {
+    pageSize: 1,
+    ref: previewData?.ref ?? null,
+  });
   const postsPagination = {
     next_page: postsResponse.next_page,
-    results: postsResponse.results
-  }
+    results: postsResponse.results,
+  };
   return {
     props: {
-      postsPagination
-    }
-  }
+      postsPagination,
+      preview,
+    },
+  };
 };

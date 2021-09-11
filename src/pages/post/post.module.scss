@@ -12,6 +12,14 @@
     }
 
   }
+
+  > span {
+    font-size: 0.875rem;
+    color: var(--gray-text);
+    font-style: italic;
+    display: block;
+    margin-top: 1rem;
+  }
 }
 
 .bodyText {
@@ -25,4 +33,35 @@
   align-items: center;
   justify-content: center;
 
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+
+  padding-top: 3rem;
+  margin-bottom: 5rem;
+
+
+  > div {
+    display: flex;
+    flex-direction: column;
+
+    p {
+      margin-bottom: 0.5rem;
+      font-size: 1.125rem;
+      color: var(--gray-text);
+    }
+
+    a {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--pink);
+    }
+
+    & + div {
+      align-items: flex-end;
+    }
+  }
 }
